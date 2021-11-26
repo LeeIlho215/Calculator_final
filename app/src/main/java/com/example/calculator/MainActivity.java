@@ -18,12 +18,12 @@ import java.util.Stack;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView text_Result;
-    private TextView text_Exp;
-    private List<Integer> checkList;
-    private Stack<String> operatorStack;
-    private List<String> infixList;
-    private List<String> postfixList;
+    private TextView text_Result; //결과값을 띄울 텍스트뷰
+    private TextView text_Exp; //수식을 띄울 텍스트뷰
+    private List<Integer> checkList; // -1 : equal, 0 : 연산자, 1 : 숫자, 2 : . / 예외발생 방지리스트
+    private Stack<String> operatorStack; //연산자를 위한 스택
+    private List<String> infixList; // 중위 표기
+    private List<String> postfixList; // 후위 표기
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
