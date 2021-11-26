@@ -1,20 +1,29 @@
 package com.example.calculator;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
+
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Stack;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn0, btnP, btnM, btnX, btnD, btnR, btnC, btnDel, btnCE, btnPercent,
-            btnPM, btnDot;
-    private int a;
-    private EditText edit;
-    private int where = 0;
+    private TextView text_Result;
+    private TextView text_Exp;
+    private List<Integer> checkList;
+    private Stack<String> operatorStack;
+    private List<String> infixList;
+    private List<String> postfixList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,166 +31,207 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toast.makeText(getApplicationContext(), "Calcultor", Toast.LENGTH_SHORT).show();
 
-        btn1 = (Button)findViewById(R.id.btn1);
-        btn2 = (Button)findViewById(R.id.btn2);
-        btn3 = (Button)findViewById(R.id.btn3);
-        btn4 = (Button)findViewById(R.id.btn4);
-        btn5 = (Button)findViewById(R.id.btn5);
-        btn6 = (Button)findViewById(R.id.btn6);
-        btn7 = (Button)findViewById(R.id.btn7);
-        btn8 = (Button)findViewById(R.id.btn8);
-        btn9 = (Button)findViewById(R.id.btn9);
-        btn0 = (Button)findViewById(R.id.btn0);
-        btnP = (Button)findViewById(R.id.btnP);
-        btnM = (Button)findViewById(R.id.btnM);
-        btnX = (Button)findViewById(R.id.btnX);
-        btnD = (Button)findViewById(R.id.btnD);
-        btnR = (Button)findViewById(R.id.btnR);
-        btnC = (Button)findViewById(R.id.btnC);
-        btnDel = (Button)findViewById(R.id.btnDEL);
-        btnCE = (Button)findViewById(R.id.btnCE);
-        btnPercent = (Button)findViewById(R.id.btnPercent);
-        btnPM = (Button)findViewById(R.id.btnPM);
-        btnDot = (Button)findViewById(R.id.btnDot);
+        this.init();
+    }
 
+    void init() {
+        text_Result = findViewById(R.id.text_Result);
+        text_Exp = findViewById(R.id.text_Exp);
+        checkList = new ArrayList<>();
+        operatorStack = new Stack<>();
+        infixList = new ArrayList<>();
+        postfixList = new ArrayList<>();
 
-        edit = (EditText)findViewById(R.id.edit1);
+        ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
+        actionBar.hide();
+    }
 
-        View.OnClickListener cl = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(v==btn1) {
-                    edit.setText(edit.getText().toString()+1);
-                }
-                else if(v==btn2) {
-                    edit.setText(edit.getText().toString()+2);
-                }
-                else if(v==btn3) {
-                    edit.setText(edit.getText().toString()+3);
-                }
-                else if(v==btn4) {
-                    edit.setText(edit.getText().toString()+4);
-                }
-                else if(v==btn5) {
-                    edit.setText(edit.getText().toString()+5);
-                }
-                else if(v==btn6) {
-                    edit.setText(edit.getText().toString()+6);
-                }
-                else if(v==btn7) {
-                    edit.setText(edit.getText().toString()+7);
-                }
-                else if(v==btn8) {
-                    edit.setText(edit.getText().toString()+8);
-                }
-                else if(v==btn9) {
-                    edit.setText(edit.getText().toString()+9);
-                }
-                else if(v==btn0) {
-                    edit.setText(edit.getText().toString()+0);
-                }
-                else if(v==btnP) {
-                    if(edit.getText().toString().equals("") || edit.getText().toString().equals(null)) {
+    public void buttonClick(View v) {
+        if (!checkList.isEmpty() && checkList.get(checkList.size() - 1) == -1) {
+            text_Exp.setText(text_Result.getText().toString());
+            checkList.clear();
+            checkList.add(1); //정수
+            checkList.add(2); //.
+            checkList.add(3); //소수점
+            text_Result.setText("");
+        }
+        switch (v.getId()) {
+            case R.id.btn1: addNumber("1"); break;
+            case R.id.btn2: addNumber("2"); break;
+            case R.id.btn3: addNumber("3"); break;
+            case R.id.btn4: addNumber("4"); break;
+            case R.id.btn5: addNumber("5"); break;
+            case R.id.btn6: addNumber("6"); break;
+            case R.id.btn7: addNumber("7"); break;
+            case R.id.btn8: addNumber("8"); break;
+            case R.id.btn9: addNumber("9"); break;
+            case R.id.btn0: addNumber("0"); break;
+            case R.id.btnDot: addDot("."); break;
+            case R.id.btnD: addOperator("/"); break;
+            case R.id.btnPercent: addOperator("%"); break;
+            case R.id.btnX: addOperator("X"); break;
+            case R.id.btnP: addOperator("+"); break;
+            case R.id.btnM: addOperator("-"); break;
+        }
+    }
 
-                    }
-                    else {
-                        a = Integer.valueOf(edit.getText().toString().trim());
-                        edit.setText("");
-                        where = 1;
-                    }
-                }
-                else if(v==btnX) {
-                    if(edit.getText().toString().equals("") || edit.getText().toString().equals(null)) {
+    public void clearClick(View v) {
+        infixList.clear();
+        checkList.clear();
+        text_Exp.setText("");
+        text_Result.setText("");
+        operatorStack.clear();
+        postfixList.clear();
+    }
 
-                    }
-                    else {
-                        a = Integer.valueOf(edit.getText().toString().trim());
-                        edit.setText("");
-                        where = 2;
-                    }
-                }
-                else if(v==btnD) {
-                    if(edit.getText().toString().equals("") || edit.getText().toString().equals(null)) {
+    public void deleteClick(View v) {
+        if (text_Exp.length() != 0) {
+            checkList.remove(checkList.size() - 1);
+            String[] ex = text_Exp.getText().toString().split("");
+            List<String> li = new ArrayList<String>();
+            Collections.addAll(li, ex);
+            li.remove(li.size() - 1);
 
-                    }
-                    else {
-                        a = Integer.valueOf(edit.getText().toString().trim());
-                        edit.setText("");
-                        where = 3;
-                    }
-                }
-                else if(v==btnM) {
-                    if(edit.getText().toString().equals("") || edit.getText().toString().equals(null)) {
+            if(li.size() > 0 && !isNumber(li.get(li.size() - 1))) {
+                li.add(li.remove(li.size() - 1) + "");
+            }
+            text_Exp.setText(TextUtils.join("", li));
+        }
+        text_Result.setText("");
+    }
 
-                    }
-                    else {
-                        a = Integer.valueOf(edit.getText().toString().trim());
-                        edit.setText("");
-                        where = 4;
-                    }
-                }
-                else if(v==btnC) {
-                    edit.setText("");
-                }
-                else if(v==btnR) {
-                    if (where == 1) {
-                        if(edit.getText().toString() == "") {
+    public void addNumber(String str) {
+        checkList.add(1);
+        text_Exp.append(str);
+    }
 
-                        }
-                        else {
-                            a = a + Integer.valueOf(edit.getText().toString().trim());
-                            edit.setText(Integer.toString(a));
-                        }
-                    }
-                    else if (where == 2) {
-                        if(edit.getText().toString() == "") {
+    void addDot(String str) {
+        if (checkList.isEmpty()) {
+            Toast.makeText(getApplicationContext(), ".을 사용할 수 없습니다.", Toast.LENGTH_SHORT).show();
+            return;
+        } else if (checkList.get(checkList.size() - 1) != 1) {
+            Toast.makeText(getApplicationContext(), ".을 사용할 수 없습니다.", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-                        }
-                        else {
-                            a = a * Integer.valueOf(edit.getText().toString().trim());
-                            edit.setText(Integer.toString(a));
-                        }
-                    }
-                    else if (where == 3) {
-                        if(edit.getText().toString() == "") {
+        for (int i = checkList.size() - 2; i >= 0; i--) {
+            int check = checkList.get(i);
+            if (check == 2) {
+                Toast.makeText(getApplicationContext(), ".을 사용할 수 없습니다.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (check == 0)
+                break;
+            if (check == 1)
+                continue;
+        }
+        checkList.add(2);
+        text_Exp.append(str);
+    }
 
-                        }
-                        else {
-                            a = a / Integer.valueOf(edit.getText().toString().trim());
-                            edit.setText(Integer.toString(a));
-                        }
-                    }
-                    else if (where == 4) {
-                        if(edit.getText().toString() == "") {
+    void addOperator(String str) {
+        try {
+            if (checkList.isEmpty()) {
+                Toast.makeText(getApplicationContext(), "연산자가 올 수 없습니다.", Toast.LENGTH_SHORT).show();
+                return;
+            } else if (checkList.get(checkList.size() - 1) == 0 && checkList.get(checkList.size() - 1) == 2) {
+                Toast.makeText(getApplicationContext(), "연산자가 올 수 없습니다.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            checkList.add(0);
+            text_Exp.append(" " + str + " ");
+        } catch(Exception e) {
+            Log.e("addOperator", e.toString());
+        }
+    }
 
-                        }
-                        else {
-                            a = a + Integer.valueOf(edit.getText().toString().trim());
-                            edit.setText(Integer.toString(a));
-                        }
-                    }
+    public void equalClick(View v) {
+        if (text_Exp.length() == 0)
+            return;
+        if (checkList.get(checkList.size() - 1) != 1) {
+            Toast.makeText(getApplicationContext(), "입력된 숫자가 없습니다.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        Collections.addAll(infixList, text_Exp.getText().toString().split(" "));
+        checkList.add(-1);
+        result();
+    }
+
+    int getWeight(String operator) {
+        int weight = 0;
+        switch (operator) {
+            case"X":
+            case"/":
+                weight = 5;
+                break;
+            case "%":
+                weight = 3;
+                break;
+            case "+":
+            case "-":
+                weight = 1;
+                break;
+        }
+        return weight;
+    }
+
+    boolean isNumber(String str) {
+        boolean result = true;
+        try {
+            Double.parseDouble(str);
+        } catch (NumberFormatException e) {
+            result = false;
+        }
+        return result;
+    }
+
+    void infixToPostfix() {
+        for (String item : infixList) {
+            if (isNumber(item))
+                postfixList.add(String.valueOf(Double.parseDouble(item)));
+            else {
+                if(operatorStack.isEmpty())
+                    operatorStack.push(item);
+                else {
+                    if (getWeight(operatorStack.peek()) >= getWeight(item))
+                        postfixList.add(operatorStack.pop());
                 }
             }
-        };
-        btn1.setOnClickListener(cl);
-        btn2.setOnClickListener(cl);
-        btn3.setOnClickListener(cl);
-        btn4.setOnClickListener(cl);
-        btn5.setOnClickListener(cl);
-        btn6.setOnClickListener(cl);
-        btn7.setOnClickListener(cl);
-        btn8.setOnClickListener(cl);
-        btn9.setOnClickListener(cl);
-        btn0.setOnClickListener(cl);
-        btnP.setOnClickListener(cl);
-        btnM.setOnClickListener(cl);
-        btnX.setOnClickListener(cl);
-        btnD.setOnClickListener(cl);
-        btnR.setOnClickListener(cl);
-        btnC.setOnClickListener(cl);
-        btnPercent.setOnClickListener(cl);
-        btnDel.setOnClickListener(cl);
-        btnPM.setOnClickListener(cl);
-        
+        }
+        while (!operatorStack.isEmpty())
+            postfixList.add(operatorStack.pop());
+    }
+
+    String calculate(String num1, String num2, String op) {
+        double first = Double.parseDouble(num1);
+        double second = Double.parseDouble(num2);
+        double result = 0.0;
+        try {
+            switch (op) {
+                case "X": result = first * second; break;
+                case "/": result = first / second; break;
+                case "%": result = first % second; break;
+                case "+": result = first + second; break;
+                case "-": result = first - second; break;
+            }
+        } catch (Exception e) {
+            Toast.makeText(getApplicationContext(), "연산할 수 없습니다.", Toast.LENGTH_SHORT).show();
+        }
+        return String.valueOf(result);
+    }
+
+    void result() {
+        int i = 0;
+        infixToPostfix();
+        while (postfixList.size() != 1) {
+            if (!isNumber(postfixList.get(1))) {
+                postfixList.add(i - 2, calculate(postfixList.remove(i - 2), postfixList.remove(i - 2), postfixList.remove(i - 2)));
+                i = -1;
+            }
+            i++;
+        }
+        text_Result.setText(postfixList.remove(0));
+        infixList.clear();
     }
 }
