@@ -300,7 +300,6 @@
                 android:textSize="18sp"
                 android:backgroundTint="#3EBAB4B4"
                 android:id="@+id/btnR"
-
                 android:onClick="equalClick"
                 android:text="="/>
 

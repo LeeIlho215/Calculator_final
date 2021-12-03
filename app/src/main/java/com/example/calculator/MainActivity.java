@@ -31,24 +31,24 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toast.makeText(getApplicationContext(), "Calcultor", Toast.LENGTH_SHORT).show();
 
-        this.init();
+        this.init(); // 이니셜라이징
     }
 
-    void init() {
-        text_Result = findViewById(R.id.text_Result);
-        text_Exp = findViewById(R.id.text_Exp);
-        checkList = new ArrayList<>();
-        operatorStack = new Stack<>();
-        infixList = new ArrayList<>();
-        postfixList = new ArrayList<>();
+    void init() { //이니셜라이징 함수
+        text_Result = findViewById(R.id.text_Result); //결과값 텍스트뷰
+        text_Exp = findViewById(R.id.text_Exp); //수식 텍스트뷰
+        checkList = new ArrayList<>(); //예외발생 방지 리스트
+        operatorStack = new Stack<>(); //연산자를 담을 스택
+        infixList = new ArrayList<>(); //중위 표기 리스트
+        postfixList = new ArrayList<>(); //후위 표기 리스트
 
-        ActionBar actionBar = getSupportActionBar();
+        ActionBar actionBar = getSupportActionBar(); //액션바 호출
         assert actionBar != null;
-        actionBar.hide();
+        actionBar.hide(); //액션바 숨기기
     }
 
-    public void buttonClick(View v) {
-        if (!checkList.isEmpty() && checkList.get(checkList.size() - 1) == -1) {
+    public void buttonClick(View v) { //버튼누름 인식함수
+        if (!checkList.isEmpty() && checkList.get(checkList.size() - 1) == -1) { //연산자가 들어왔는지 확인
             text_Exp.setText(text_Result.getText().toString());
             checkList.clear();
             checkList.add(1); //정수
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
             checkList.add(3); //소수점
             text_Result.setText("");
         }
-        switch (v.getId()) {
+        switch (v.getId()) { //버튼의 ID값을 받아와 switch문 구동
             case R.id.btn1: addNumber("1"); break;
             case R.id.btn2: addNumber("2"); break;
             case R.id.btn3: addNumber("3"); break;
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.btn9: addNumber("9"); break;
             case R.id.btn0: addNumber("0"); break;
             case R.id.btnDot: addDot("."); break;
-            case R.id.btnD: addOperator("/"); break;
+            case R.id.btnD: addOperator("÷"); break;
             case R.id.btnPercent: addOperator("%"); break;
             case R.id.btnX: addOperator("X"); break;
             case R.id.btnP: addOperator("+"); break;
@@ -76,7 +76,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void clearClick(View v) {
+    public void clearClick(View v) { //C 버튼을 눌렀을때 작동할 함수
+        // 표기리스트, 체크리스트, 결과값, 수식, 스택 등 초기화
         infixList.clear();
         checkList.clear();
         text_Exp.setText("");
@@ -85,18 +86,18 @@ public class MainActivity extends AppCompatActivity {
         postfixList.clear();
     }
 
-    public void deleteClick(View v) {
-        if (text_Exp.length() != 0) {
-            checkList.remove(checkList.size() - 1);
-            String[] ex = text_Exp.getText().toString().split("");
+    public void deleteClick(View v) { //DEL 버튼을 눌렀을 때 작동할 함수
+        if (text_Exp.length() != 0) { //수식의 길이가 0이 아닐때
+            checkList.remove(checkList.size() - 1); //체크리스트의 마지막 개체 삭제
+            String[] ex = text_Exp.getText().toString().split(" "); //수식텍스트뷰를 String 으로 받아와서 ""을 기준으로 나눠서 ex에 배열로 저장
             List<String> li = new ArrayList<String>();
             Collections.addAll(li, ex);
             li.remove(li.size() - 1);
 
             if(li.size() > 0 && !isNumber(li.get(li.size() - 1))) {
-                li.add(li.remove(li.size() - 1) + "");
+                li.add(li.remove(li.size() - 1) + " ");
             }
-            text_Exp.setText(TextUtils.join("", li));
+            text_Exp.setText(TextUtils.join(" ", li));
         }
         text_Result.setText("");
     }
