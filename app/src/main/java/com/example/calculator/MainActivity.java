@@ -185,6 +185,7 @@ public class MainActivity extends AppCompatActivity {
             result = false;
         }
         return result;
+
     }
 
     void infixToPostfix() {
@@ -226,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
         int i = 0;
         infixToPostfix();
         while (postfixList.size() != 1) {
-            if (!isNumber(postfixList.get(1))) {
+            if (!isNumber(postfixList.get(i))) {
                 postfixList.add(i - 2, calculate(postfixList.remove(i - 2), postfixList.remove(i - 2), postfixList.remove(i - 2)));
                 i = -1;
             }
