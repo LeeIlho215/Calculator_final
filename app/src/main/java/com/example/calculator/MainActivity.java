@@ -212,7 +212,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             switch (op) {
                 case "X": result = first * second; break;
-                case "/": result = first / second; break;
+                case "÷": result = first / second; break;
                 case "%": result = first % second; break;
                 case "+": result = first + second; break;
                 case "-": result = first - second; break;
