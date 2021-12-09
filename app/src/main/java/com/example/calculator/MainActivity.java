@@ -3,6 +3,7 @@ package com.example.calculator;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -163,8 +164,8 @@ public class MainActivity extends AppCompatActivity {
     int getWeight(String operator) {
         int weight = 0;
         switch (operator) {
-            case"X":
-            case"/":
+            case "X":
+            case "/":
                 weight = 5;
                 break;
             case "%":
@@ -242,5 +243,11 @@ public class MainActivity extends AppCompatActivity {
         } catch(IndexOutOfBoundsException e) {
             e.printStackTrace();
         }
+    }
+
+    public void swapClick(View v) {
+        Intent intent = new Intent(MainActivity.this, MainActivity2.class);
+        startActivity(intent);
+        finish();
     }
 }

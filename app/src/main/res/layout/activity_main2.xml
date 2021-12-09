@@ -16,8 +16,8 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="방정식 계산기로"
-            android:onClick="swapClick"/>
+            android:onClick="swapClick"
+            android:text="일반 계산기로" />
 
         <TextView
             android:id="@+id/text_Exp"
