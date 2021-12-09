@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -136,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
             if (checkList.isEmpty()) {
                 Toast.makeText(getApplicationContext(), "연산자가 올 수 없습니다.", Toast.LENGTH_SHORT).show();
                 return;
-            } else if (checkList.get(checkList.size() - 1) == 0 && checkList.get(checkList.size() - 1) == 2) {
+            } else if (checkList.get(checkList.size() - 1) == 0 || checkList.get(checkList.size() - 1) == 2) {
                 Toast.makeText(getApplicationContext(), "연산자가 올 수 없습니다.", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -224,16 +225,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void result() {
-        int i = 0;
-        infixToPostfix();
-        while (postfixList.size() != 1) {
-            if (!isNumber(postfixList.get(i))) {
-                postfixList.add(i - 2, calculate(postfixList.remove(i - 2), postfixList.remove(i - 2), postfixList.remove(i - 2)));
-                i = -1;
+        try {
+            int i = 0;
+            infixToPostfix();
+            while (postfixList.size() != 1) {
+                if (!isNumber(postfixList.get(i))) {
+                    postfixList.add(i - 2, calculate(postfixList.remove(i - 2), postfixList.remove(i - 2), postfixList.remove(i - 2)));
+                    i = -1;
+                }
+                i++;
             }
-            i++;
+            text_Result.setText(postfixList.remove(0));
+            infixList.clear();
+        } catch(IllegalStateException e) {
+            e.printStackTrace();
+        } catch(IndexOutOfBoundsException e) {
+            e.printStackTrace();
         }
-        text_Result.setText(postfixList.remove(0));
-        infixList.clear();
     }
 }
