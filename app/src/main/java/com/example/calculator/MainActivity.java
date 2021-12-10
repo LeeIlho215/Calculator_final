@@ -1,8 +1,10 @@
 package com.example.calculator;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -31,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toast.makeText(getApplicationContext(), "Calcultor", Toast.LENGTH_SHORT).show();
 
         this.init(); // 이니셜라이징
     }
@@ -249,5 +250,30 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this, MainActivity2.class);
         startActivity(intent);
         finish();
+    }
+
+    public void show() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, android.R.style.Theme_Holo_Dialog_NoActionBar);
+
+        builder.setMessage("앱을 종료하시겠습니까?                                   ")
+                .setTitle("앱 종료")
+                .setPositiveButton("아니오", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Log.i("Dialog", "취소");
+            }
+        })
+        .setNeutralButton("예", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        })
+        .show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        show();
     }
 }

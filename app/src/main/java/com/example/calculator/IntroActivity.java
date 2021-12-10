@@ -22,6 +22,9 @@ public class IntroActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar(); //액션바 호출
         assert actionBar != null;
         actionBar.hide(); //액션바 숨기기
+
+        onBackPressed();
+
         logo = findViewById(R.id.logo);
         textLogo = findViewById(R.id.logoText);
 
@@ -49,6 +52,11 @@ public class IntroActivity extends AppCompatActivity {
             }
         });
 
+
+    }
+
+    @Override
+    public void onBackPressed() {
 
     }
 }
