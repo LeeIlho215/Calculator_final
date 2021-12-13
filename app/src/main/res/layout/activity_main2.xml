@@ -107,30 +107,30 @@
                 android:layout_height="match_parent"
                 android:layout_width="wrap_content"
                 android:textSize="18sp"
-                android:enabled="false"
                 android:backgroundTint="#3EBAB4B4"
                 android:layout_weight="1"
-                android:clickable="false"
-                android:id="@+id/button"/>
+                android:text="x"
+                android:textAllCaps="false"
+                android:id="@+id/btnx"/>
 
             <Button
                 android:layout_height="match_parent"
                 android:layout_width="wrap_content"
                 android:textSize="18sp"
-                android:enabled="false"
                 android:backgroundTint="#3EBAB4B4"
                 android:layout_weight="1"
-                android:clickable="false"
-                android:id="@+id/button5"/>
+                android:text="x²"
+                android:textAllCaps="false"
+                android:id="@+id/btnx2"/>
 
             <Button
-                android:id="@+id/button4"
+                android:id="@+id/btnxn"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:backgroundTint="#3EBAB4B4"
                 android:layout_weight="1"
-                android:clickable="false"
-                android:enabled="false"
+                android:text="xⁿ"
+                android:textAllCaps="false"
                 android:textSize="18sp" />
 
             <Button

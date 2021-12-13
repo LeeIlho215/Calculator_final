@@ -301,9 +301,9 @@
                 android:layout_height="match_parent"
                 android:backgroundTint="#3EFFFFFF"
                 android:layout_weight="1"
-                android:onClick="buttonClick"
                 android:text="+/-"
                 android:textSize="18sp" />
+                <!--android:onClick="swapSign"-->
 
             <Button
                 android:id="@+id/btn0"

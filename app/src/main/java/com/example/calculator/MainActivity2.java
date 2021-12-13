@@ -9,8 +9,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
 public class MainActivity2 extends AppCompatActivity {
+
+    Button btnx, btnx2, btnxn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
