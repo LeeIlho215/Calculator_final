@@ -11,7 +11,9 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="250dp">
+        android:layout_height="250dp"
+        android:layout_margin="5dp"
+        android:outlineAmbientShadowColor="@color/black">
 
         <Button
             android:layout_width="wrap_content"
@@ -41,7 +43,7 @@
 
             android:layout_marginTop="25dp"
             android:textColor="@color/black"
-            android:textSize="100sp"
+            android:textSize="50sp"
             android:textStyle="bold" />
     </RelativeLayout>
 
@@ -302,8 +304,8 @@
                 android:backgroundTint="#3EFFFFFF"
                 android:layout_weight="1"
                 android:text="+/-"
+                android:onClick="swapSign"
                 android:textSize="18sp" />
-                <!--android:onClick="swapSign"-->
 
             <Button
                 android:id="@+id/btn0"

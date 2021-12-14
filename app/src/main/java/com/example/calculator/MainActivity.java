@@ -153,14 +153,19 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /*
-    public void swapSign(View v) { // +/- 부호 바꾸는 메서드(제작중)
-        if(checkList.get(checkList.size() - 1) == 1 || checkList.isEmpty()) {
-            if(text_Exp.get) {
 
-            }
+    public void swapSign(View v) { // +/- 부호 바꾸는 메서드(제작중)
+        if(checkList.get(checkList.size() - 1) == 1) {
+            String[] ex = text_Exp.getText().toString().split(" "); //수식텍스트뷰를 String 으로 받아와서 ""을 기준으로 나눠서 ex에 배열로 저장
+            List<String> li = new ArrayList<String>(); //삭제작업을 진행할 리스트 생성
+            Collections.addAll(li, ex); //리스트에 ex의 값을 추가
+            double tempDouble = Double.parseDouble(li.get(li.size() - 1));
+            tempDouble *= -1;
+            String tempString = Double.toString(tempDouble);
+            li.set(li.size() - 1, tempString);
+            text_Exp.setText(TextUtils.join(" ", li));
         }
-    }*/
+    }
 
     public void equalClick(View v) { // = 버튼을 눌렀을때 작동할 메서드
         if (text_Exp.length() == 0) //수식의 길이가 0이라면 계산을 실행하지 않음
