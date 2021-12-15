@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void swapSign(View v) { // +/- 부호 바꾸는 메서드(제작중)
+    public void swapSign(View v) { // +/- 부호 바꾸는 메서드
         if(checkList.get(checkList.size() - 1) == 1) {
             String[] ex = text_Exp.getText().toString().split(" "); //수식텍스트뷰를 String 으로 받아와서 ""을 기준으로 나눠서 ex에 배열로 저장
             List<String> li = new ArrayList<String>(); //삭제작업을 진행할 리스트 생성
