@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView text_Exp; //수식을 띄울 텍스트뷰
     private List<Integer> checkList; // -1 : equal, 0 : 연산자, 1 : 숫자, 2 : . , 3 : 부호결정중/ 예외발생 방지리스트
     private Stack<String> operatorStack; //연산자를 위한 스택
-    private Stack<String> triVal;   // 삼각함수 연산을 위한 스택
+   // private Stack<String> triVal;   // 삼각함수 연산을 위한 스택
     private List<String> infixList; // 중위 표기
     private List<String> postfixList; // 후위 표기
 
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         text_Exp = findViewById(R.id.text_Exp); //수식 텍스트뷰
         checkList = new ArrayList<>(); //예외발생 방지 리스트
         operatorStack = new Stack<>(); //연산자를 담을 스택
-        triVal = new Stack<>(); // 삼각함수 연산기호를 담을 스택
+       // triVal = new Stack<>(); // 삼각함수 연산기호를 담을 스택
         infixList = new ArrayList<>(); //중위 표기 리스트
         postfixList = new ArrayList<>(); //후위 표기 리스트
 
@@ -63,28 +63,61 @@ public class MainActivity extends AppCompatActivity {
             text_Result.setText("");
         }
         switch (v.getId()) { //버튼의 id를 받아와 switch 구동
-            case R.id.btn1: addNumber("1"); break;
-            case R.id.btn2: addNumber("2"); break;
-            case R.id.btn3: addNumber("3"); break;
-            case R.id.btn4: addNumber("4"); break;
-            case R.id.btn5: addNumber("5"); break;
-            case R.id.btn6: addNumber("6"); break;
-            case R.id.btn7: addNumber("7"); break;
-            case R.id.btn8: addNumber("8"); break;
-            case R.id.btn9: addNumber("9"); break;
-            case R.id.btn0: addNumber("0"); break;
-            case R.id.btnDot: addDot("."); break;
-            case R.id.btnD: addOperator("÷"); break;
-            case R.id.btnPercent: addOperator("%"); break;
-            case R.id.btnX: addOperator("X"); break;
-            case R.id.btnP: addOperator("+"); break;
-            case R.id.btnM: addOperator("-"); break;
-            case R.id.btnSinx: addOperator("sin x"); break;
-            case R.id.btnCosx: addOperator("cos x"); break;
-            case R.id.btnTanx: addOperator("tan x"); break;
+                case R.id.btn1:
+                    addNumber("1");
+                    break;
+                case R.id.btn2:
+                    addNumber("2");
+                    break;
+                case R.id.btn3:
+                    addNumber("3");
+                    break;
+                case R.id.btn4:
+                    addNumber("4");
+                    break;
+                case R.id.btn5:
+                    addNumber("5");
+                    break;
+                case R.id.btn6:
+                    addNumber("6");
+                    break;
+                case R.id.btn7:
+                    addNumber("7");
+                    break;
+                case R.id.btn8:
+                    addNumber("8");
+                    break;
+                case R.id.btn9:
+                    addNumber("9");
+                    break;
+                case R.id.btn0:
+                    addNumber("0");
+                    break;
+                case R.id.btnDot:
+                    addDot(".");
+                    break;
+                case R.id.btnD:
+                    addOperator("÷");
+                    break;
+                case R.id.btnPercent:
+                    addOperator("%");
+                    break;
+                case R.id.btnX:
+                    addOperator("X");
+                    break;
+                case R.id.btnP:
+                    addOperator("+");
+                    break;
+                case R.id.btnM:
+                    addOperator("-");
+                    break;
+                case R.id.btnx2:
+                    addOperator("x²");
+                    break;
 
+            }
         }
-    }
+
 
     public void clearClick(View v) { //C 버튼을 눌렀을때 작동할 함수
         // 표기리스트, 체크리스트, 결과값, 수식, 스택 등 초기화
@@ -94,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
         text_Result.setText("");
         operatorStack.clear();
         postfixList.clear();
-        triVal.clear();
+       // triVal.clear();
     }
 
     public void deleteClick(View v) { //DEL 버튼을 눌렀을 때 작동할 함수
@@ -142,6 +175,7 @@ public class MainActivity extends AppCompatActivity {
         checkList.add(2); //.이 들어왔음을 알림
         text_Exp.append(str); //수식 뒤에 .을 붙이기
     }
+
 
     void addOperator(String str) { //연산자 추가 메서드
         try {
@@ -269,6 +303,7 @@ public class MainActivity extends AppCompatActivity {
         finish(); //메모리절약(?)을 위해 현재 액티비티는 종료
     }
 
+    /*
     Double triFunc(double x, String op) {
         double num = x*(Math.PI/180);
         double result = 0;
@@ -286,19 +321,37 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void triClick(View v) { // sin x, cos x, tan x 버튼을 클릭시 작동되는 메서드
-       // triVal.push(toString(v));
+        // triVal.push(toString(v));
         if (text_Exp.length() == 0) //수식의 길이가 0이라면 계산을 실행하지 않음
             return;
         if (checkList.get(checkList.size() - 1) != 1) { //마지막이 연산자나 .으로 끝날경우 계산을 실행하지 않음
             Toast.makeText(getApplicationContext(), "입력된 숫자가 없습니다.", Toast.LENGTH_SHORT).show(); //Toast 창을 띄워서 입력된 숫자가 없다고 안내함
             return;
+
         }
-       // triFunc(text_Exp, triVal);
+
+        try {
+
+        switch (v.getId()) {
+            case R.id.btnSinx:
+                addOperator("sin x");
+                break;
+            case R.id.btnCosx:
+                addOperator("cos x");
+                break;
+            case R.id.btnTanx:
+                addOperator("tan x");
+                break;
+            }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        triFunc(Double.parseDouble(String.valueOf(postfixList)), String.valueOf(triVal));
         text_Result.setText(postfixList.remove(0));
         infixList.clear();
     }
 
-
+*/
     public void show() { //뒤로가기 버튼을 눌렀을 때 앱을 종료할건지 물어보기 위한 메서드
         AlertDialog.Builder builder = new AlertDialog.Builder(this, android.R.style.Theme_Holo_Dialog_NoActionBar);
 
