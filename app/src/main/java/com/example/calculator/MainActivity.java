@@ -270,7 +270,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     Double triFunc(double x, String op) {
-        double num = x;
+        double num = x*(Math.PI/180);
         double result = 0;
         try {
             switch(op) {
