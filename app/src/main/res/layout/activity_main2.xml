@@ -114,14 +114,13 @@
                 android:id="@+id/btnx"/>
 
             <Button
+                android:id="@+id/btnx2"
                 android:layout_height="match_parent"
-                android:layout_width="wrap_content"
-                android:textSize="18sp"
-                android:backgroundTint="#3EBAB4B4"
                 android:layout_weight="1"
+                android:backgroundTint="#3EBAB4B4"
                 android:text="x²"
                 android:textAllCaps="false"
-                android:id="@+id/btnx2"/>
+                android:textSize="18sp" />
 
             <Button
                 android:id="@+id/btnxn"

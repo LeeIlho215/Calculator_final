@@ -23,6 +23,8 @@ public class MainActivity2 extends AppCompatActivity {
         init();
     }
 
+
+
     void init() {
         ActionBar actionBar = getSupportActionBar(); //액션바 호출
         assert actionBar != null;

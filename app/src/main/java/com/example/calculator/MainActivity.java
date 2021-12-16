@@ -250,9 +250,9 @@ public class MainActivity extends AppCompatActivity {
             }
             text_Result.setText(postfixList.remove(0)); //postfixList의 첫번째 개체 삭제 후 결과값에 세팅
             infixList.clear(); //중위표기 리스트 초기화
-        } catch(IllegalStateException e) { //예외처리
+        } catch (IllegalStateException e) { //예외처리
             e.printStackTrace();
-        } catch(IndexOutOfBoundsException e) { //예외처리
+        } catch (IndexOutOfBoundsException e) { //예외처리
             e.printStackTrace();
         }
     }
@@ -262,6 +262,24 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
         finish(); //메모리절약(?)을 위해 현재 액티비티는 종료
     }
+
+    Double triFunc(double x, String op) {
+        double num = x;
+        double result = 0;
+        try {
+            switch(op) {
+                case "sin": result = Math.sin(x);
+                case "cos": result = Math.cos(x);
+                case "tan": result = Math.tan(x);
+            }
+        }catch (Exception e) { //예외발생시
+            Toast.makeText(getApplicationContext(), "연산할 수 없습니다.", Toast.LENGTH_SHORT).show(); //안내메시지 출력
+        }
+        return Double.valueOf(result);
+    }
+
+
+
 
     public void show() { //뒤로가기 버튼을 눌렀을 때 앱을 종료할건지 물어보기 위한 메서드
         AlertDialog.Builder builder = new AlertDialog.Builder(this, android.R.style.Theme_Holo_Dialog_NoActionBar);
