@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView text_Exp; //수식을 띄울 텍스트뷰
     private List<Integer> checkList; // -1 : equal, 0 : 연산자, 1 : 숫자, 2 : . , 3 : 부호결정중/ 예외발생 방지리스트
     private Stack<String> operatorStack; //연산자를 위한 스택
+    private Stack<String> triVal;   // 삼각함수 연산을 위한 스택
     private List<String> infixList; // 중위 표기
     private List<String> postfixList; // 후위 표기
 
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         text_Exp = findViewById(R.id.text_Exp); //수식 텍스트뷰
         checkList = new ArrayList<>(); //예외발생 방지 리스트
         operatorStack = new Stack<>(); //연산자를 담을 스택
+        triVal = new Stack<>(); // 삼각함수 연산기호를 담을 스택
         infixList = new ArrayList<>(); //중위 표기 리스트
         postfixList = new ArrayList<>(); //후위 표기 리스트
 
@@ -77,6 +79,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.btnX: addOperator("X"); break;
             case R.id.btnP: addOperator("+"); break;
             case R.id.btnM: addOperator("-"); break;
+            case R.id.btnSinx: addOperator("sin x"); break;
+            case R.id.btnCosx: addOperator("cos x"); break;
+            case R.id.btnTanx: addOperator("tan x"); break;
 
         }
     }
@@ -89,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
         text_Result.setText("");
         operatorStack.clear();
         postfixList.clear();
+        triVal.clear();
     }
 
     public void deleteClick(View v) { //DEL 버튼을 눌렀을 때 작동할 함수
@@ -268,9 +274,9 @@ public class MainActivity extends AppCompatActivity {
         double result = 0;
         try {
             switch(op) {
-                case "sin": result = Math.sin(x);
-                case "cos": result = Math.cos(x);
-                case "tan": result = Math.tan(x);
+                case "sin x": result = Math.sin(num);
+                case "cos x": result = Math.cos(num);
+                case "tan x": result = Math.tan(num);
             }
         }catch (Exception e) { //예외발생시
             Toast.makeText(getApplicationContext(), "연산할 수 없습니다.", Toast.LENGTH_SHORT).show(); //안내메시지 출력
@@ -279,6 +285,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public void triClick(View v) { // sin x, cos x, tan x 버튼을 클릭시 작동되는 메서드
+       // triVal.push(toString(v));
+        if (text_Exp.length() == 0) //수식의 길이가 0이라면 계산을 실행하지 않음
+            return;
+        if (checkList.get(checkList.size() - 1) != 1) { //마지막이 연산자나 .으로 끝날경우 계산을 실행하지 않음
+            Toast.makeText(getApplicationContext(), "입력된 숫자가 없습니다.", Toast.LENGTH_SHORT).show(); //Toast 창을 띄워서 입력된 숫자가 없다고 안내함
+            return;
+        }
+       // triFunc(text_Exp, triVal);
+        text_Result.setText(postfixList.remove(0));
+        infixList.clear();
+    }
 
 
     public void show() { //뒤로가기 버튼을 눌렀을 때 앱을 종료할건지 물어보기 위한 메서드

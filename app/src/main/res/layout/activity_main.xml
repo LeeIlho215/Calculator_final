@@ -109,6 +109,7 @@
                 android:layout_weight="1"
                 android:backgroundTint="#3EBAB4B4"
                 android:text="sin x"
+                android:onClick="triClick"
                 android:textAllCaps="false"
                 android:textSize="18sp" />
 
@@ -118,6 +119,7 @@
                 android:layout_weight="1"
                 android:backgroundTint="#3EBAB4B4"
                 android:text="cos x"
+                android:onClick="triClick"
                 android:textAllCaps="false"
                 android:textSize="18sp" />
 
@@ -127,6 +129,7 @@
                 android:layout_weight="1"
                 android:backgroundTint="#3EBAB4B4"
                 android:text="tan x"
+                android:onClick="triClick"
                 android:textAllCaps="false"
                 android:textSize="18sp" />
 
