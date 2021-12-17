@@ -22,8 +22,8 @@ import java.util.Stack;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView text_Result; //결과값을 띄울 텍스트뷰
-    private TextView text_Exp; //수식을 띄울 텍스트뷰
+    private TextView txtResult; //결과값을 띄울 텍스트뷰
+    private TextView txtExp; //수식을 띄울 텍스트뷰
     private List<Integer> checkList; // -1 : equal, 0 : 연산자, 1 : 숫자, 2 : . , 3 : 부호결정중/ 예외발생 방지리스트
     private Stack<String> operatorStack; //연산자를 위한 스택
    // private Stack<String> triVal;   // 삼각함수 연산을 위한 스택
@@ -38,9 +38,9 @@ public class MainActivity extends AppCompatActivity {
         this.init(); // 이니셜라이징
     }
 
-    void init() { //이니셜라이징 함수
-        text_Result = findViewById(R.id.text_Result); //결과값 텍스트뷰
-        text_Exp = findViewById(R.id.text_Exp); //수식 텍스트뷰
+    private void init() { //이니셜라이징 함수
+        txtResult = findViewById(R.id.text_Result); //결과값 텍스트뷰
+        txtExp = findViewById(R.id.text_Exp); //수식 텍스트뷰
         checkList = new ArrayList<>(); //예외발생 방지 리스트
         operatorStack = new Stack<>(); //연산자를 담을 스택
        // triVal = new Stack<>(); // 삼각함수 연산기호를 담을 스택
@@ -55,12 +55,12 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("NonConstantResourceId")
     public void buttonClick(View v) { //버튼누름 인식함수
         if (!checkList.isEmpty() && checkList.get(checkList.size() - 1) == -1) { //연산자가 들어왔는지 확인
-            text_Exp.setText(text_Result.getText().toString());
+            txtExp.setText(txtResult.getText().toString());
             checkList.clear();
             checkList.add(1); //정수
             checkList.add(2); //.
             checkList.add(3); //소수점
-            text_Result.setText("");
+            txtResult.setText("");
         }
         switch (v.getId()) { //버튼의 id를 받아와 switch 구동
                 case R.id.btn1:
@@ -123,17 +123,17 @@ public class MainActivity extends AppCompatActivity {
         // 표기리스트, 체크리스트, 결과값, 수식, 스택 등 초기화
         infixList.clear();
         checkList.clear();
-        text_Exp.setText("");
-        text_Result.setText("");
+        txtExp.setText("");
+        txtResult.setText("");
         operatorStack.clear();
         postfixList.clear();
        // triVal.clear();
     }
 
     public void deleteClick(View v) { //DEL 버튼을 눌렀을 때 작동할 함수
-        if (text_Exp.length() != 0) { //수식의 길이가 0이 아닐때
+        if (txtExp.length() != 0) { //수식의 길이가 0이 아닐때
             checkList.remove(checkList.size() - 1); //체크리스트의 마지막 개체 삭제
-            String[] ex = text_Exp.getText().toString().split(" "); //수식텍스트뷰를 String 으로 받아와서 ""을 기준으로 나눠서 ex에 배열로 저장
+            String[] ex = txtExp.getText().toString().split(" "); //수식텍스트뷰를 String 으로 받아와서 ""을 기준으로 나눠서 ex에 배열로 저장
             List<String> li = new ArrayList<String>(); //삭제작업을 진행할 리스트 생성
             Collections.addAll(li, ex); //리스트에 ex의 값을 추가
             li.remove(li.size() - 1); //리스트의 마지막 값을 제거
@@ -141,17 +141,17 @@ public class MainActivity extends AppCompatActivity {
             if(li.size() > 0 && !isNumber(li.get(li.size() - 1))) { //마지막이 연산자일 때 " " 빈칸 추가
                 li.add(li.remove(li.size() - 1) + " ");
             }
-            text_Exp.setText(TextUtils.join(" ", li)); //수식을 " " 공백을 간격으로 대입
+            txtExp.setText(TextUtils.join(" ", li)); //수식을 " " 공백을 간격으로 대입
         }
-        text_Result.setText(""); //결과창 초기화
+        txtResult.setText(""); //결과창 초기화
     }
 
-    public void addNumber(String str) { //수식에 숫자 추가
+    private void addNumber(String str) { //수식에 숫자 추가
         checkList.add(1); //숫자가 들어갔음을 알림
-        text_Exp.append(str); //기존 수식 뒤에 숫자를 추가
+        txtExp.append(str); //기존 수식 뒤에 숫자를 추가
     }
 
-    void addDot(String str) {
+    private void addDot(String str) {
         if (checkList.isEmpty()) { //맨처음 .을 찍는거 방지
             Toast.makeText(getApplicationContext(), ".을 사용할 수 없습니다.", Toast.LENGTH_SHORT).show();
             return;
@@ -173,11 +173,11 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         checkList.add(2); //.이 들어왔음을 알림
-        text_Exp.append(str); //수식 뒤에 .을 붙이기
+        txtExp.append(str); //수식 뒤에 .을 붙이기
     }
 
 
-    void addOperator(String str) { //연산자 추가 메서드
+    private void addOperator(String str) { //연산자 추가 메서드
         try {
             if (checkList.isEmpty()) { //제일 첫번째에 연산자가 오는 것 방지
                 Toast.makeText(getApplicationContext(), "연산자가 올 수 없습니다.", Toast.LENGTH_SHORT).show();
@@ -187,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
             checkList.add(0); //연산자가 왔음을 알림
-            text_Exp.append(" " + str + " "); //앞뒤로 한칸씩의 공백을 두고 연산자 추가
+            txtExp.append(" " + str + " "); //앞뒤로 한칸씩의 공백을 두고 연산자 추가
         } catch(Exception e) { //예외발생시
             Log.e("addOperator", e.toString());
         }
@@ -196,25 +196,25 @@ public class MainActivity extends AppCompatActivity {
 
     public void swapSign(View v) { // +/- 부호 바꾸는 메서드
         if(checkList.get(checkList.size() - 1) == 1) {
-            String[] ex = text_Exp.getText().toString().split(" "); //수식텍스트뷰를 String 으로 받아와서 ""을 기준으로 나눠서 ex에 배열로 저장
+            String[] ex = txtExp.getText().toString().split(" "); //수식텍스트뷰를 String 으로 받아와서 ""을 기준으로 나눠서 ex에 배열로 저장
             List<String> li = new ArrayList<String>(); //삭제작업을 진행할 리스트 생성
             Collections.addAll(li, ex); //리스트에 ex의 값을 추가
             double tempDouble = Double.parseDouble(li.get(li.size() - 1));
             tempDouble *= -1;
             String tempString = Double.toString(tempDouble);
             li.set(li.size() - 1, tempString);
-            text_Exp.setText(TextUtils.join(" ", li));
+            txtExp.setText(TextUtils.join(" ", li));
         }
     }
 
     public void equalClick(View v) { // = 버튼을 눌렀을때 작동할 메서드
-        if (text_Exp.length() == 0) //수식의 길이가 0이라면 계산을 실행하지 않음
+        if (txtExp.length() == 0) //수식의 길이가 0이라면 계산을 실행하지 않음
             return;
         if (checkList.get(checkList.size() - 1) != 1) { //마지막이 연산자나 .으로 끝날경우 계산을 실행하지 않음
             Toast.makeText(getApplicationContext(), "입력된 숫자가 없습니다.", Toast.LENGTH_SHORT).show();
             return;
         }
-        Collections.addAll(infixList, text_Exp.getText().toString().split(" ")); //infixList(중위표기)에 수식을 " " 공백을 기준으로 나누어 집어넣음
+        Collections.addAll(infixList, txtExp.getText().toString().split(" ")); //infixList(중위표기)에 수식을 " " 공백을 기준으로 나누어 집어넣음
         checkList.add(-1); // 계산을 시도할 것임을 알림
         result(); //계산 및 결과표출 메서드 실행
     }
@@ -241,7 +241,7 @@ public class MainActivity extends AppCompatActivity {
         return str.matches("-?\\d+(\\.\\d+)?");
     }
 
-    void infixToPostfix() { //중위표기를 후위표기로 바꾸는 메서드
+    private void infixToPostfix() { //중위표기를 후위표기로 바꾸는 메서드
         for (String item : infixList) { //infixList의 item을 뽑아내기(item이 없을때까지)
             if (isNumber(item)) //받아온 item이 숫자라면
                 postfixList.add(String.valueOf(Double.parseDouble(item))); //후위표기식에 숫자를 추가
@@ -277,7 +277,7 @@ public class MainActivity extends AppCompatActivity {
         return String.valueOf(result); //결과값을 String 으로 반환
     }
 
-    void result() { //계산 및 결과표출을 담당하는 메서드
+    private void result() { //계산 및 결과표출을 담당하는 메서드
         try {
             int i = 0; //index 정수 생성
             infixToPostfix(); //중위표기를 후위표기로 바꾸기
@@ -288,7 +288,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 i++;
             }
-            text_Result.setText(postfixList.remove(0)); //postfixList의 첫번째 개체 삭제 후 결과값에 세팅
+            txtResult.setText(postfixList.remove(0)); //postfixList의 첫번째 개체 삭제 후 결과값에 세팅
             infixList.clear(); //중위표기 리스트 초기화
         } catch (IllegalStateException e) { //예외처리
             e.printStackTrace();
@@ -297,7 +297,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void swapClick(View v) { //방정식 계산기로 넘어가기 위한 메서드
+    private void swapClick(View v) { //방정식 계산기로 넘어가기 위한 메서드
         Intent intent = new Intent(MainActivity.this, MainActivity2.class);
         startActivity(intent);
         finish(); //메모리절약(?)을 위해 현재 액티비티는 종료
@@ -352,7 +352,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 */
-    public void show() { //뒤로가기 버튼을 눌렀을 때 앱을 종료할건지 물어보기 위한 메서드
+    private void show() { //뒤로가기 버튼을 눌렀을 때 앱을 종료할건지 물어보기 위한 메서드
         AlertDialog.Builder builder = new AlertDialog.Builder(this, android.R.style.Theme_Holo_Dialog_NoActionBar);
 
         builder.setMessage("앱을 종료하시겠습니까?                                   ")
